@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guía Rápida: TanStack Form, Zod y API Platzi Users</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header>
+  <h1>Guía Rápida: Usar TanStack Form, Zod y API Platzi Users</h1>
+</header>
+
+<main>
+
+  <section>
+    <h2>1. ¿Qué es TanStack Form, Zod y la API de Platzi?</h2>
+    <ul>
+      <li><strong>TanStack Form:</strong> Librería de React para manejar formularios de forma sencilla y eficiente.</li>
+      <li><strong>Zod:</strong> Librería de validaciones que nos permite asegurar que los datos enviados cumplen las reglas necesarias.</li>
+      <li><strong>API de Platzi Users:</strong> API que permite crear, consultar, actualizar y eliminar usuarios mediante peticiones HTTP.</li>
+    </ul>
+    <p><strong>Link de la API:</strong> <a href="https://api.escuelajs.co/api/v1/users" target="_blank">https://api.escuelajs.co/api/v1/users</a></p>
+  </section>
+
+  <section>
+    <h2>2. Instalación</h2>
+    <ol>
+      <li>Instalar React si no tienes un proyecto creado:
+        <pre><code>npm create vite@latest</code></pre>
+        Luego eliges:
+        <ul>
+          <li>Framework: React</li>
+          <li>TypeScript + SWC</li>
+        </ul>
+        Entras a la carpeta:
+        <pre><code>cd nombre-del-proyecto</code></pre>
+        Instalar dependencias:
+        <pre><code>npm install</code></pre>
+      </li>
+      <li>Instalar TanStack Form y Zod:
+        <pre><code>npm install @tanstack/react-form zod</code></pre>
+      </li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>3. Crear esquema de validación con Zod</h2>
+    <p>Crear un archivo llamado <strong>userSchema.ts</strong>:</p>
+    <pre><code>import { z } from 'zod';
+
+export const userSchema = z.object({
+  name: z.string().min(3, 'Name must have at least 3 characters'),
+  email: z.string().email('Invalid email address'),
+  password: z.string().min(6, 'Password must have at least 6 characters'),
+});</code></pre>
+  </section>
+
+  <section>
+    <h2>4. Crear el formulario usando TanStack Form</h2>
+    <p>Crear un archivo llamado <strong>RegistroForm.tsx</strong>:</p>
+    <pre><code>import { useForm } from '@tanstack/react-form';
+import { userSchema } from './userSchema';
+import { zodValidator } from '@tanstack/zod-form-adapter';
+
+const RegistroForm = () => {
+  const form = useForm({
+    defaultValues: {
+      name: '',
+      email: '',
+      password: '',
+    },
+    validatorAdapter: zodValidator,
+    onSubmit: async ({ value }) => {
+      await fetch('https://api.escuelajs.co/api/v1/users', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: value.name,
+          email: value.email,
+          password: value.password,
+          avatar: 'https://api.lorem.space/image/face?w=640&h=480',
+        }),
+      });
+    },
+  });
+
+  return (
+    &lt;form onSubmit={form.handleSubmit}&gt;
+      &lt;input {...form.register('name')} placeholder="Name" /&gt;
+      &lt;input {...form.register('email')} placeholder="Email" /&gt;
+      &lt;input {...form.register('password')} type="password" placeholder="Password" /&gt;
+      &lt;button type="submit"&gt;Register&lt;/button&gt;
+    &lt;/form&gt;
+  );
+};
+
+export default RegistroForm;</code></pre>
+  </section>
+
+  <section>
+    <h2>5. Conexión con la API de Platzi Users</h2>
+    <p>Cuando enviamos el formulario, los datos se mandan mediante un <code>fetch</code> a la API de Platzi. La API espera recibir:</p>
+    <ul>
+      <li>name</li>
+      <li>email</li>
+      <li>password</li>
+      <li>avatar (es requerido, se envía uno fijo)</li>
+    </ul>
+    <p><strong>Pasos:</strong></p>
+    <ol>
+      <li><strong>onSubmit se activa:</strong> El usuario envía el formulario y se ejecuta la función onSubmit, que recibe los datos ingresados.</li>
+      <li><strong>fetch realiza la petición:</strong> Se hace una petición HTTP POST a la API.</li>
+      <li><strong>Configuración de fetch:</strong>
+        <ul>
+          <li><code>method: 'POST'</code>: Crear nuevo recurso.</li>
+          <li><code>headers: { 'Content-Type': 'application/json' }</code>: Enviar datos JSON.</li>
+          <li><code>body: JSON.stringify({...})</code>: Datos ingresados por el usuario.</li>
+        </ul>
+      </li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>6. Notas rápidas</h2>
+    <ul>
+      <li><strong>Zod</strong> define las reglas de validación de los campos.</li>
+      <li><strong>TanStack Form</strong> gestiona el estado y eventos del formulario.</li>
+      <li><strong>zodValidator</strong> conecta TanStack Form con Zod para validar automáticamente.</li>
+      <li><strong>fetch</strong> realiza la petición POST a la API de Platzi Users.</li>
+      <li>No se manejan errores en esta versión para simplificar la implementación.</li>
+    </ul>
+  </section>
+
+</main>
+
+</body>
+</html>

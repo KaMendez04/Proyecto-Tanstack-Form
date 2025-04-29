@@ -1,0 +1,107 @@
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    background: #ffffff;
+    color: #222;
+    line-height: 1.6;
+    padding: 20px;
+  }
+  
+  header {
+    background: #ffffff;
+    text-align: center;
+    padding: 30px 20px;
+    border-bottom: 1px solid #eee;
+  }
+  
+  header h1 {
+    font-size: 2rem;
+    font-weight: 600;
+  }
+  
+  main {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 0 20px;
+  }
+  
+  section {
+    margin-bottom: 50px;
+  }
+  
+  h2 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    color: #333;
+    border-left: 4px solid #2563eb;
+    padding-left: 10px;
+  }
+  
+  p {
+    margin: 10px 0 20px;
+    color: #444;
+  }
+  
+  ul, ol {
+    margin: 15px 0 20px 30px;
+  }
+  
+  ul li, ol li {
+    margin-bottom: 10px;
+  }
+  
+  strong {
+    color: #111;
+  }
+  
+  pre {
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 15px;
+    overflow-x: auto;
+    margin-top: 15px;
+    margin-bottom: 15px;
+  }
+  
+  code {
+    font-family: 'Fira Code', 'Courier New', Courier, monospace;
+    font-size: 0.95rem;
+    color: #111;
+  }
+  
+  button {
+    background: #2563eb;
+    color: white;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  
+  button:hover {
+    background: #1e40af;
+  }
+  
+  @media (max-width: 768px) {
+    main {
+      padding: 20px;
+    }
+  
+    h2 {
+      font-size: 1.3rem;
+    }
+  
+    header h1 {
+      font-size: 1.5rem;
+    }
+  }
+  
