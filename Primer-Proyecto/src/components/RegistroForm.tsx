@@ -3,7 +3,7 @@ import { useForm } from '@tanstack/react-form';
 import { FormField } from './FormField';
 import { userSchema } from '../schemas/userSchema';
 import { validateField } from '../utils/validateField';
-import { getUsers, createUser } from '../services/userService';
+import { userServiceHook } from '../services/userHook';
 import { Button } from './Button';
 
 export default function RegistroForm() {
@@ -12,13 +12,15 @@ export default function RegistroForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
 
+  const { registerUser } = userServiceHook(); 
+
   const form = useForm({
     defaultValues: {
       name: '',
       email: '',
       address: '',
-      phone: '',        
-      birthdate: '',    
+      phone: '',
+      birthdate: '',
       password: '',
       confirmPassword: '',
       rol: '',
@@ -40,19 +42,12 @@ export default function RegistroForm() {
         return;
       }
 
-      const usersData = await getUsers();
-      if (!usersData) {
-        setMessage({ text: 'Failed to load users.', type: 'error' });
-        setIsLoading(false);
-        return;
-      }
-
-      const createdUser = await createUser({
+      const createdUser = await registerUser({
         name: value.name,
         email: value.email,
         address: value.address,
-        phone: value.phone,         
-        birthdate: value.birthdate, 
+        phone: value.phone,
+        birthdate: value.birthdate,
         password: value.password,
         role: value.rol,
       });
@@ -63,7 +58,7 @@ export default function RegistroForm() {
         return;
       }
 
-      console.log('✅ User registered successfully:', value);
+      console.log('User registered successfully:', value);
       setMessage({ text: 'User registered successfully!', type: 'success' });
       setRegisteredRole(value.rol);
       setTimeout(() => {
@@ -96,38 +91,48 @@ export default function RegistroForm() {
             form.handleSubmit();
           }}
         >
-          {(['name', 'email', 'address', 'phone', 'birthdate', 'password', 'confirmPassword', 'rol'] as const).map((fieldName) => (
-            <form.Field key={fieldName} name={fieldName}>
-              {(field) => (
-                <FormField
-                  label={fieldName === 'confirmPassword' ? 'Confirm Password' : fieldName.charAt(0).toUpperCase() + fieldName.slice(1)}
-                  name={field.name}
-                  type={
-                    fieldName === 'password' || fieldName === 'confirmPassword'
-                      ? 'password'
-                      : fieldName === 'email'
-                      ? 'email'
-                      : fieldName === 'birthdate'
-                      ? 'date' 
-                      : fieldName === 'rol'
-                      ? 'select'
-                      : 'text'
-                  }
-                  value={field.state.value}
-                  options={fieldName === 'rol' ? [
-                    { value: 'customer', label: 'Customer' },
-                    { value: 'admin', label: 'Admin' },
-                  ] : undefined}
-                  error={formErrors[fieldName]}
-                  onChange={async (value) => {
-                    field.handleChange(value);
-                    const error = await validateField(fieldName, value, form.state.values);
-                    setFormErrors((prev) => ({ ...prev, [fieldName]: error }));
-                  }}
-                />
-              )}
-            </form.Field>
-          ))}
+          {(['name', 'email', 'address', 'phone', 'birthdate', 'password', 'confirmPassword', 'rol'] as const).map(
+            (fieldName) => (
+              <form.Field key={fieldName} name={fieldName}>
+                {(field) => (
+                  <FormField
+                    label={
+                      fieldName === 'confirmPassword'
+                        ? 'Confirm Password'
+                        : fieldName.charAt(0).toUpperCase() + fieldName.slice(1)
+                    }
+                    name={field.name}
+                    type={
+                      fieldName === 'password' || fieldName === 'confirmPassword'
+                        ? 'password'
+                        : fieldName === 'email'
+                        ? 'email'
+                        : fieldName === 'birthdate'
+                        ? 'date'
+                        : fieldName === 'rol'
+                        ? 'select'
+                        : 'text'
+                    }
+                    value={field.state.value}
+                    options={
+                      fieldName === 'rol'
+                        ? [
+                            { value: 'customer', label: 'Customer' },
+                            { value: 'admin', label: 'Admin' },
+                          ]
+                        : undefined
+                    }
+                    error={formErrors[fieldName]}
+                    onChange={async (value) => {
+                      field.handleChange(value);
+                      const error = await validateField(fieldName, value, form.state.values);
+                      setFormErrors((prev) => ({ ...prev, [fieldName]: error }));
+                    }}
+                  />
+                )}
+              </form.Field>
+            )
+          )}
 
           <Button type="submit" isLoading={isLoading}>
             Submit

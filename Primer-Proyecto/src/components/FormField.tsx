@@ -1,3 +1,5 @@
+import React from 'react';
+
 interface FormFieldProps {
   label: string;
   name: string;
@@ -17,6 +19,9 @@ export const FormField = ({
   options,
   onChange,
 }: FormFieldProps) => {
+  // Limitar fechas para el input date
+  const today = new Date().toISOString().split('T')[0];
+
   return (
     <div className="form-group">
       <label htmlFor={name}>{label}:</label>
@@ -45,6 +50,7 @@ export const FormField = ({
           type={type}
           value={value}
           onChange={(e) => onChange(e.target.value)}
+          {...(type === 'date' ? { max: today } : {})} // 🛠 Aquí agregamos el max solo para date
         />
       )}
       {error && <div className="error-text">{error}</div>}
