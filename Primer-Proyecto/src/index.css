@@ -1,0 +1,141 @@
+:root {
+  --primary-color: #4361ee;
+  --primary-hover: #3a56d4;
+  --secondary-color: #f8f9fa;
+  --text-color: #2b2d42;
+  --light-text: #8d99ae;
+  --input-border: #e9ecef;
+  --input-focus: #040e41;
+  --background: #f8f9fa;
+  --white: #ffffff;
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --transition: all 0.2s ease;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  line-height: 1.6;
+  font-weight: 400;
+  color: var(--text-color);
+  background-color: var(--background);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 1rem;
+}
+
+.container {
+  max-width: 500px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.form-container {
+  max-width: 480px;
+  width: 100%;
+  margin: 2rem auto;
+}
+
+.form-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.form-header h1 {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: var(--text-color);
+  margin-bottom: 0.5rem;
+}
+
+.form-header p {
+  color: var(--light-text);
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+form {
+  padding: 2.5rem;
+  background-color: var(--white);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+input,
+select {
+  width: 100%;
+  padding: 0.875rem;
+  font-size: 0.95rem;
+  border: 1px solid var(--input-border);
+  border-radius: var(--radius-sm);
+  background-color: var(--secondary-color);
+  transition: var(--transition);
+}
+
+input:focus,
+select:focus {
+  border-color: var(--input-focus);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+  background-color: var(--white);
+}
+
+button {
+  width: 100%;
+  padding: 1rem;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--white);
+  background-color: var(--primary-color);
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: var(--transition);
+  margin-top: 0.5rem;
+}
+
+button:hover {
+  background-color: var(--primary-hover);
+}
+
+.message {
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: var(--radius-sm);
+}
+
+.message-success {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.message-error {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.message small {
+  display: block;
+  margin-top: 5px;
+  font-size: 0.9em;
+}
+
+.error-text {
+  color: red;
+  font-size: 0.8em;
+  margin-top: 5px;
+}
